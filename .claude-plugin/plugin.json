@@ -6,7 +6,13 @@
     "name": "milla-jovovich"
   },
   "license": "MIT",
-  "skills": "./skills/",
+  "commands": [],
+  "skills": [
+    {
+      "name": "mempalace",
+      "file": "skills/mempalace/SKILL.md"
+    }
+  ],
   "mcp": {
     "mempalace": {
       "command": "python3",
