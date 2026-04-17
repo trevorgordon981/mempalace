@@ -79,34 +79,7 @@ onMounted(() => {
     })
   })()
 
-  /* ---------- Parallax on the hero palace ---------- */
-  ;(function(){
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const stage = document.querySelector('.mempalace-landing .palace-stage')
-    if (!stage) return
-    const svg = stage.querySelector('svg.palace')
-    const halo = stage.querySelector('.halo')
-    let targetX = 0, targetY = 0, x = 0, y = 0, raf
 
-    function onMove(e){
-      const rect = stage.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2
-      const cy = rect.top + rect.height / 2
-      targetX = ((e.clientX - cx) / rect.width) * 14
-      targetY = ((e.clientY - cy) / rect.height) * 10
-      if (!raf) raf = requestAnimationFrame(tick)
-    }
-    function tick(){
-      x += (targetX - x) * 0.08
-      y += (targetY - y) * 0.08
-      if (svg)  svg.style.transform  = 'translate(' + x + 'px,' + y + 'px)'
-      if (halo) halo.style.transform = 'translate(' + (x*0.5) + 'px,' + (y*0.5) + 'px)'
-      if (Math.abs(x - targetX) > 0.05 || Math.abs(y - targetY) > 0.05){
-        raf = requestAnimationFrame(tick)
-      } else { raf = null }
-    }
-    window.addEventListener('mousemove', onMove, { passive: true })
-  })()
 
   /* ---------- Reveal-on-scroll for cards ---------- */
   ;(function(){
@@ -482,7 +455,7 @@ onBeforeUnmount(() => {
 
     </div>
 
-    <!-- Crystalline palace visual -->
+    <!-- Palace video visual -->
     <div class="palace-stage" aria-hidden="true">
       <div class="halo"></div>
 
@@ -499,76 +472,15 @@ onBeforeUnmount(() => {
         <i style="top:6%;  left:48%;  --t:6.8s; --d:0.4s"></i>
       </div>
 
-      <svg class="palace" viewBox="-200 -240 400 440" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="facetFront" x1="0" y1="-150" x2="0" y2="90" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stop-color="#9ED8FF" stop-opacity="0.22"/>
-            <stop offset="1"   stop-color="#4AA3FF" stop-opacity="0.02"/>
-          </linearGradient>
-          <linearGradient id="facetRight" x1="0" y1="-120" x2="150" y2="60" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stop-color="#A8B5FF" stop-opacity="0.18"/>
-            <stop offset="1"   stop-color="#4AA3FF" stop-opacity="0.02"/>
-          </linearGradient>
-          <linearGradient id="facetLeft" x1="0" y1="-120" x2="-150" y2="60" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stop-color="#9ED8FF" stop-opacity="0.14"/>
-            <stop offset="1"   stop-color="#4AA3FF" stop-opacity="0.02"/>
-          </linearGradient>
-          <radialGradient id="core" cx="0" cy="0" r="30" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stop-color="#EAF4FF" stop-opacity="1"/>
-            <stop offset="0.5" stop-color="#9ED8FF" stop-opacity="0.5"/>
-            <stop offset="1"   stop-color="#4AA3FF" stop-opacity="0"/>
-          </radialGradient>
-          <linearGradient id="beam" x1="0" y1="-240" x2="0" y2="-150" gradientUnits="userSpaceOnUse">
-            <stop offset="0"   stop-color="#9ED8FF" stop-opacity="0"/>
-            <stop offset="0.7" stop-color="#9ED8FF" stop-opacity="0.55"/>
-            <stop offset="1"   stop-color="#EAF4FF" stop-opacity="1"/>
-          </linearGradient>
-          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-          <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        <g class="float" filter="url(#softGlow)">
-          <g class="beam-flare">
-            <line class="beam" x1="0" y1="-140" x2="0" y2="-235" filter="url(#strongGlow)"/>
-            <line class="beam" x1="0" y1="-140" x2="0" y2="-210" stroke-width="3" opacity="0.3"/>
-          </g>
-
-          <polygon class="edge-soft draw" points="0,-140 0,-20 130,30" />
-          <polygon class="edge-soft draw" points="0,-140 0,-20 -130,30" />
-          <polygon class="edge-soft draw" points="0,-140 -130,30 0,80 130,30" />
-
-          <polygon class="edge draw" points="0,80 130,30 0,-20 -130,30" opacity="0.85"/>
-
-          <polygon class="facet-fill-left" points="0,-140 -130,30 0,80"/>
-          <polygon class="edge draw" points="0,-140 -130,30 0,80"/>
-
-          <polygon class="facet-fill-right" points="0,-140 130,30 0,80"/>
-          <polygon class="edge draw" points="0,-140 130,30 0,80"/>
-
-          <line class="edge-soft draw" x1="0" y1="-140" x2="0" y2="80"/>
-          <line class="edge-soft draw" x1="-130" y1="30" x2="130" y2="30"/>
-
-          <g opacity="0.55">
-            <polygon class="edge-soft draw" points="0,-80 70,15 0,50 -70,15"/>
-            <line class="edge-soft draw" x1="0" y1="-80" x2="0" y2="50"/>
-          </g>
-
-          <circle class="core" cx="0" cy="0" r="28"/>
-          <circle cx="0" cy="0" r="2.5" fill="#EAF4FF" filter="url(#strongGlow)"/>
-        </g>
-      </svg>
+      <video
+        class="palace-video"
+        src="/hero_video.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        disablepictureinpicture
+      ></video>
     </div>
   </section>
 
@@ -1404,26 +1316,40 @@ body.mempalace-active { overflow-x: hidden; }
   max-width: 640px;
   justify-self: end;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .mempalace-landing .palace-stage .halo {
   position: absolute;
   inset: -12% -8% -5% -12%;
-  background: radial-gradient(50% 45% at 50% 55%, rgba(74,163,255,0.45), transparent 70%);
+  background: radial-gradient(50% 45% at 50% 55%, rgba(74,163,255,0.35), transparent 70%);
   filter: blur(30px);
-  opacity: 0.7;
+  opacity: 0.6;
   animation: mpl-haloPulse 7s ease-in-out infinite;
   z-index: 0;
 }
 @keyframes mpl-haloPulse {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50%      { opacity: 0.9;  transform: scale(1.06); }
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 0.75;  transform: scale(1.06); }
 }
-.mempalace-landing .palace-stage svg.palace {
+.mempalace-landing .palace-stage .palace-video {
   position: relative;
   z-index: 2;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  object-fit: cover;
+  pointer-events: none;
+
+  --mask-left: linear-gradient(to right, transparent 0%, black 25%);
+  --mask-right: linear-gradient(to left, transparent 0%, black 25%);
+  --mask-top: linear-gradient(to bottom, transparent 0%, black 15%);
+  --mask-bottom: linear-gradient(to top, transparent 0%, black 15%);
+
+  -webkit-mask-image: var(--mask-left), var(--mask-right), var(--mask-top), var(--mask-bottom);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--mask-left), var(--mask-right), var(--mask-top), var(--mask-bottom);
+  mask-composite: intersect;
 }
 .mempalace-landing .palace-stage .stars { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .mempalace-landing .palace-stage .stars i {
@@ -1439,37 +1365,6 @@ body.mempalace-active { overflow-x: hidden; }
 @keyframes mpl-twinkle {
   0%, 100% { opacity: 0; transform: scale(0.6); }
   50%      { opacity: 0.9; transform: scale(1); }
-}
-.mempalace-landing .palace .float {
-  transform-origin: 50% 55%;
-  animation: mpl-float 9s ease-in-out infinite, mpl-yaw 60s linear infinite;
-}
-@keyframes mpl-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes mpl-yaw {
-  0%   { transform: translateY(0) rotate(-1.5deg); }
-  50%  { transform: translateY(-10px) rotate(1.5deg); }
-  100% { transform: translateY(0) rotate(-1.5deg); }
-}
-.mempalace-landing .palace .edge      { stroke: var(--prism); stroke-width: 1.1; fill: none; }
-.mempalace-landing .palace .edge-soft { stroke: var(--prism); stroke-width: 0.7; fill: none; opacity: 0.35; }
-.mempalace-landing .palace .facet-fill-front { fill: url(#facetFront); }
-.mempalace-landing .palace .facet-fill-right { fill: url(#facetRight); }
-.mempalace-landing .palace .facet-fill-left  { fill: url(#facetLeft);  }
-.mempalace-landing .palace .beam      { stroke: url(#beam); stroke-width: 1.5; }
-.mempalace-landing .palace .core      { fill: url(#core); }
-.mempalace-landing .palace .draw {
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: mpl-draw 2.2s ease-out 0.3s forwards;
-}
-@keyframes mpl-draw { to { stroke-dashoffset: 0; } }
-.mempalace-landing .palace .beam-flare {
-  animation: mpl-beamPulse 5s ease-in-out infinite;
-  transform-origin: 50% 100%;
-}
-@keyframes mpl-beamPulse {
-  0%, 100% { opacity: 0.45; transform: scaleY(1); }
-  50%      { opacity: 0.9;  transform: scaleY(1.1); }
 }
 
 /* Forgetting */
@@ -2062,8 +1957,8 @@ body.mempalace-active { overflow-x: hidden; }
   .mempalace-landing .mech:nth-child(2) { border-bottom: var(--rule) solid var(--hair); }
 }
 @media (max-width: 900px) {
-  .mempalace-landing .hero { grid-template-columns: 1fr; gap: 3rem; }
-  .mempalace-landing .palace-stage { justify-self: center; max-width: 480px; }
+  .mempalace-landing .hero { grid-template-columns: 1fr; gap: 2rem; }
+  .mempalace-landing .palace-stage { justify-self: center; max-width: 400px; order: -1; aspect-ratio: 1 / 0.85; }
   .mempalace-landing .anatomy-head { grid-template-columns: 1fr; }
   .mempalace-landing .anatomy-diagram { grid-template-columns: 1fr; }
   .mempalace-landing .forgetting-head { grid-template-columns: 1fr; }
