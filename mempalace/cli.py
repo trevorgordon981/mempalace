@@ -120,12 +120,19 @@ def cmd_init(args):
     total = len(detected["people"]) + len(detected["projects"]) + len(detected["uncertain"])
     if total > 0:
         confirmed = confirm_entities(detected, yes=getattr(args, "yes", False))
-        # Save confirmed entities to <project>/entities.json for the miner
+        # Save confirmed entities to <project>/entities.json (per-project
+        # audit trail — user can inspect or hand-edit) AND merge into the
+        # global registry the miner reads at mine time.
         if confirmed["people"] or confirmed["projects"]:
             entities_path = Path(args.dir).expanduser().resolve() / "entities.json"
             with open(entities_path, "w") as f:
-                json.dump(confirmed, f, indent=2)
+                json.dump(confirmed, f, indent=2, ensure_ascii=False)
             print(f"  Entities saved: {entities_path}")
+
+            from .miner import add_to_known_entities
+
+            registry_path = add_to_known_entities(confirmed)
+            print(f"  Registry updated: {registry_path}")
     else:
         print("  No entities detected — proceeding with directory-based rooms.")
 
